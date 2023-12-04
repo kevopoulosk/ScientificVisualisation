@@ -7,6 +7,7 @@ from tqdm import tqdm
 
 # Load the initial positions of neurons
 fn_positions = "Desktop/SciVis_Contest_Simulations/rank_0_positions.txt"
+#fn_positions = "/Users/manuelgonzaleznovo/Desktop/ScientificVisualisation/Files/rank_0_positions.txt"
 positions_data = np.loadtxt(fn_positions, skiprows=7, usecols=(0, 1, 2, 3))
 
 # Create points for neurons
@@ -73,6 +74,7 @@ def NetworkConnectivity(local_ids, step_num=1000000, sim_id="calcium"):
     
     # Load network and connectivity data
     fn_network = f"Desktop/SciVis_Contest_Simulations/connectivity_{sim_id}/rank_0_step_{int(step_num)}_in_network.txt"
+    #fn_network = "/Users/manuelgonzaleznovo/Desktop/ScientificVisualisation/Files/network/rank_0_step_1000000_in_network.txt"
     network_data = np.loadtxt(fn_network, skiprows=4, usecols=(1, 3))
 
     # Create lines for connections
