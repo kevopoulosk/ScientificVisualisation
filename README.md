@@ -8,7 +8,7 @@ To run the code and produce our animation, it is neccesary to have Python instal
 - `pip install -r requirements.txt`
 
 Then, by typping into your predefined terminal the command `python project_vtk.py` you would be able to run the file. The behaviour of the program can be modified by setting the `show_nodes` to True/False to visualize the corresponding nodes or the different areas. To do so, you should modify the value inside the main function call in the script:
-- ´if __name__ == "__main__":
-    main(True)  # Set to True or False as needed´
+- `if __name__ == "__main__":
+    main(True)  # Set to True or False as needed`
 
   
