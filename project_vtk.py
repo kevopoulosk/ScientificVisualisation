@@ -2,31 +2,6 @@ import numpy as np
 import pandas as pd 
 import vtk
 
-# Load the initial positions of neurons
-fn_positions = "/Files/rank_0_positions.txt"
-positions_data = np.loadtxt(fn_positions, skiprows=7, usecols=(0, 1, 2, 3, 4), dtype={'names': ('local_id', 'x', 'y', 'z', 'area'), 'formats': ('i4', 'f8', 'f8', 'f8', 'U10')})
-
-# Create points for neurons
-points = vtk.vtkPoints()
-local_ids = []
-
-# Create a dictionary to store actors for each brain area
-area_actors = {}
-
-# Create a vtkPoints object to store the connection points
-connection_points = vtk.vtkPoints()
-
-# Create a vtkCellArray to store the tubes
-tubes = vtk.vtkCellArray()
-
-actor_neurons = vtk.vtkActor()
-first = True
-
-for row in positions_data:
-    local_id, x, y, z, _ = row
-    points.InsertNextPoint(x, y, z)
-    local_ids.append(local_id)
-
 def create_connections(connection_points, tubes, source_center, target_center, count):
     """
     This function creates an actor for the connection between the nodes in the form of tubes.
@@ -323,12 +298,43 @@ def update_visualization(obj, event):
         # Stop the animation when all timesteps are processed
         interactor.ExitCallback() 
 
+def update_event_callback(obj, event):
+    interactor.Render()
+
+fn_positions = "/Files/rank_0_positions.txt"
+positions_data = np.loadtxt(fn_positions, skiprows=7, usecols=(0, 1, 2, 3, 4), dtype={'names': ('local_id', 'x', 'y', 'z', 'area'), 'formats': ('i4', 'f8', 'f8', 'f8', 'U10')})
+
 timesteps = [0, 250000, 500000, 750000, 1000000]
 timestep_index = 0
 
-# Set up VTK components
+# Create points for neurons
+points = vtk.vtkPoints()
+local_ids = []
+
+# Create a dictionary to store actors for each brain area
+area_actors = {}
+
+# Create a vtkPoints object to store the connection points
+connection_points = vtk.vtkPoints()
+
+# Create a vtkCellArray to store the tubes
+tubes = vtk.vtkCellArray()
+
+actor_neurons = vtk.vtkActor()
+first = True
+
+show_nodes = True
+
+# Create renderer
 renderer = vtk.vtkRenderer()
 render_window = vtk.vtkRenderWindow()
+
+for row in positions_data:
+        local_id, x, y, z, _ = row
+        points.InsertNextPoint(x, y, z)
+        local_ids.append(local_id)
+
+# Set up VTK components
 render_window.SetWindowName("VTK Animation with Progress Bar")
 render_window.SetSize(800, 600)
 render_window.AddRenderer(renderer)
@@ -361,15 +367,21 @@ slider_widget.SetRepresentation(slider)
 slider_widget.SetAnimationModeToAnimate()
 slider_widget.EnabledOn()
 
-# Add the timer event
-interactor.AddObserver("TimerEvent", update_visualization)
-interactor.CreateRepeatingTimer(6000)  # Set the timer interval in milliseconds
+def main(show_nodes_input):
+    
+    global show_nodes
 
-def update_event_callback(obj, event):
-    interactor.Render()
+    show_nodes = show_nodes_input
 
-interactor.AddObserver("UpdateEvent", update_event_callback)
+    # Add the timer event
+    interactor.AddObserver("TimerEvent", update_visualization)
+    interactor.CreateRepeatingTimer(6000)  # Set the timer interval in milliseconds
 
-# Start the interactor
-interactor.Start()
+    interactor.AddObserver("UpdateEvent", update_event_callback)
+
+    # Start the interactor
+    interactor.Start()
+
+if __name__ == "__main__":
+    main(False)
 
