@@ -3,7 +3,7 @@ import pandas as pd
 import vtk
 
 # Load the initial positions of neurons
-fn_positions = "/Users/manuelgonzaleznovo/Desktop/ScientificVisualisation/Files/rank_0_positions.txt"
+fn_positions = "/Files/rank_0_positions.txt"
 positions_data = np.loadtxt(fn_positions, skiprows=7, usecols=(0, 1, 2, 3, 4), dtype={'names': ('local_id', 'x', 'y', 'z', 'area'), 'formats': ('i4', 'f8', 'f8', 'f8', 'U10')})
 
 # Create points for neurons
@@ -150,7 +150,7 @@ def VisualizeAreas(local_ids, points, positions_data, show_nodes, timestep, rend
     global actor_neurons
 
     # Load file and create the dictionary to store the areas
-    fn_connections = f"/Users/manuelgonzaleznovo/Desktop/results_connections_simulations/calcium/connections_calcium_timestep_{timestep}.txt"
+    fn_connections = f"/Files/results_connections_simulations/calcium/connections_calcium_timestep_{timestep}.txt"
 
     area_connection_counts = pd.read_csv(fn_connections, sep='\s+', header=None)
     area_connection_counts = area_connection_counts.T
@@ -281,7 +281,7 @@ def update_visualization(obj, event):
     if timestep_index < len(timesteps):
 
         # Load file and create the dictionary to store the areas
-        fn_connections = f"/Users/manuelgonzaleznovo/Desktop/results_connections_simulations/calcium/connections_calcium_timestep_{timesteps[timestep_index]}.txt"
+        fn_connections = f"/Files/results_connections_simulations/calcium/connections_calcium_timestep_{timesteps[timestep_index]}.txt"
 
         area_connection_counts = pd.read_csv(fn_connections, sep='\s+', header=None)
         area_connection_counts = area_connection_counts.T
@@ -291,7 +291,7 @@ def update_visualization(obj, event):
         area_connection_dict = area_connection_counts.to_dict(orient='list')
 
         if show_nodes == True:
-            fn_colours = "/Users/manuelgonzaleznovo/Desktop/ScientificVisualisation/colours_calcium_from_monitors.txt"
+            fn_colours = "/Files/colours_calcium_from_monitors.txt"
             colours = pd.read_csv(fn_colours, sep='\t', header=0, usecols=range(1, 7), engine='python')
             color_values = colours.iloc[:, timestep_index].astype(float).values
             print(color_values[0])
