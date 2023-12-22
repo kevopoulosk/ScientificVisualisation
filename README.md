@@ -11,4 +11,6 @@ Then, by typping into your predefined terminal the command `python project_vtk.p
 - `if __name__ == "__main__":
     main(True)  # Set to True or False as needed`
 
+In order to visualise the lineplots presented in the report, you just need to run the file: `SciVis_brainplasticity.py`.
+
   
