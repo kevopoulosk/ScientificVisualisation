@@ -9,7 +9,7 @@ def create_connections(connection_points, tubes, source_center, target_center, c
     """
     connection_points.InsertNextPoint(source_center)
     connection_points.InsertNextPoint(target_center)
-
+    # Tube filter
     tube = vtk.vtkLine()
     tube.GetPointIds().SetId(0, connection_points.InsertNextPoint(source_center))
     tube.GetPointIds().SetId(1, connection_points.InsertNextPoint(target_center))
@@ -43,7 +43,7 @@ def create_connections(connection_points, tubes, source_center, target_center, c
 
 def create_nodes(color_values):
     """
-    This function creates an actor for the nodes.
+    This function creates an actor for the nodes/neurons.
     Returns: nodes actor
     """
     global actor_neurons, first
@@ -121,7 +121,9 @@ def create_areas(area_points):
     return actor_area
 
 def VisualizeAreas(local_ids, points, positions_data, show_nodes, timestep, renderer, render_window, interactor, slider, area_actors, connection_points, tubes):
-
+"""
+This function visualises the different areas of the brain.
+"""
     global actor_neurons
 
     # Load file and create the dictionary to store the areas
@@ -134,7 +136,7 @@ def VisualizeAreas(local_ids, points, positions_data, show_nodes, timestep, rend
     area_connection_counts = area_connection_counts.drop(columns=[area_connection_counts.columns[0]])
     area_connection_dict = area_connection_counts.to_dict(orient='list')
 
-    fn_colours = "/Users/manuelgonzaleznovo/Desktop/ScientificVisualisation/colours_calcium_from_monitors.txt"
+    fn_colours = "/Files/colours_calcium_from_monitors.txt"
     colours = pd.read_csv(fn_colours, sep='\t', header=0, usecols=range(1, 7), engine='python')
     color_values = colours.iloc[:, timestep_index].astype(float).values
     
@@ -285,10 +287,10 @@ def update_visualization(obj, event):
         # Update the slider value to reflect the progress
         slider.SetValue(float(timestep_index) / len(timesteps))
 
-        # Explicitly render the scene
+        # Render the scene
         render_window.Render()
 
-        #if timestep_index != 4:
+        # if timestep_index != 4:
         timestep_index += 1
 
         # Increment the timestep index
@@ -384,4 +386,3 @@ def main(show_nodes_input):
 
 if __name__ == "__main__":
     main(False)
-
